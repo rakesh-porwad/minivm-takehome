@@ -1,3 +1,8 @@
 #!/bin/sh
-# ./optimize program.mini schema.json  ->  an equivalent MiniVM program
-cat "$1"
+# Usage: ./optimize program.mini schema.json
+
+set -eu
+
+SCRIPT_DIR=$(CDPATH= cd -- "$(dirname -- "$0")" && pwd)
+
+exec python3 "$SCRIPT_DIR/tools/optimize.py" "$@"

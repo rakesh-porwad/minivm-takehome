@@ -163,9 +163,15 @@ def eliminate_dead_code(instructions):
     Backward liveness analysis.
 
     Instructions whose outputs are never needed are removed.
-    Unknown instructions are preserved.
+    Unknown instructions  are preserved by returning the original program.
     """
+    # If any instruction is unknown, avoid unsafe optimisation.
+    for instruction in instructions:
+        _, _, supported = get_dependencies(instruction)
 
+        if not supported:
+            return instructions
+        
     live_registers = set()
     keep = [False] * len(instructions)
 

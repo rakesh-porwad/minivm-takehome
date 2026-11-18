@@ -1,0 +1,31 @@
+load	r1, orders.o_id
+load	r3, orders.o_date
+load	r4, orders.o_amt
+load	r6, orders.o_status
+load	r7, orders.o_note
+nvl	r8, r7, ''
+nvl	r9, r6, ''
+cat	r10, r8, ' '
+cat	r11, r10, r9
+nullife	r12, r11
+left	r13, r12, 40
+sort	r16, r4 DESC NL, r1 ASC NF
+gather	r17, r1, r16
+gather	r19, r3, r16
+gather	r20, r4, r16
+gather	r24, r13, r16
+year	r25, r19
+eq	r26, r25, 2023
+month	r27, r19
+eq	r28, r27, 7
+and	r29, r26, r28
+idx	r30, r29
+gather	r31, r17, r30
+gather	r34, r20, r30
+gather	r38, r24, r30
+iota	r39, r31
+slice	r39, r39, 5
+gather	r40, r31, r39
+gather	r43, r34, r39
+gather	r47, r38, r39
+out	r40, r43, r47
