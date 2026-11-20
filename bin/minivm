@@ -1,9 +1,0 @@
-#!/bin/sh
-os=$(uname -s | tr A-Z a-z); arch=$(uname -m); ext=
-case $os in darwin) os=macos;; mingw*|msys*|cygwin*) os=windows; ext=.exe;; esac
-case $arch in arm64) arch=aarch64;; amd64) arch=x86_64;; esac
-bin="$(dirname "$0")/minivm-$os-$arch$ext"
-[ -x "$bin" ] || { echo "minivm: no build for $os-$arch in $(dirname "$0")" >&2; exit 1; }
-# Downloaded zips are quarantined; Gatekeeper would block the unsigned binary.
-[ "$os" = macos ] && xattr -d com.apple.quarantine "$bin" 2>/dev/null
-exec "$bin" "$@"
