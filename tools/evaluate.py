@@ -6,7 +6,6 @@ import sys
 import tempfile
 
 from decimal import Decimal, InvalidOperation
-from collections import Counter
 from pathlib import Path
 
 PROJECT_ROOT = Path(__file__).resolve().parents[1]
@@ -36,7 +35,10 @@ def run_command(command, timeout=30):
     )
 
 
+
+
 def optimizer_command(optimizer, program, schema):
+    # Python optimizer: run using the current Python interpreter.
     if optimizer.suffix.lower() == ".py":
         return [
             sys.executable,
@@ -45,11 +47,31 @@ def optimizer_command(optimizer, program, schema):
             str(schema),
         ]
 
+    # Unix shell launcher: use Git Bash's sh.exe on Windows.
+    if sys.platform == "win32" and optimizer.name == "optimize":
+        return [
+            r"C:\Program Files\Git\bin\sh.exe",
+            str(optimizer),
+            str(program),
+            str(schema),
+        ]
+
+    # Unix shell launcher on Linux.
+    if optimizer.name == "optimize":
+        return [
+            "sh",
+            str(optimizer),
+            str(program),
+            str(schema),
+        ]
+
+    # Native executable optimizer.
     return [
         str(optimizer),
         str(program),
         str(schema),
     ]
+
 
 
 NUMERIC_PATTERN = re.compile(
@@ -100,6 +122,56 @@ def values_equal(a, b):
         return difference <= RELATIVE_TOLERANCE * scale
 
     return type(a) is type(b) and a == b
+
+
+def validate_output(result, label="output"):
+    """
+    Validate the JSON structure returned by MiniVM.
+    """
+    if not isinstance(result, dict):
+        raise ValueError(f"{label}: output must be a JSON object")
+
+    if "ncols" not in result:
+        raise ValueError(f"{label}: missing 'ncols'")
+
+    ncols = result["ncols"]
+
+    if not isinstance(ncols, int) or isinstance(ncols, bool) or ncols < 0:
+        raise ValueError(f"{label}: 'ncols' must be a non-negative integer")
+
+    if "rows" not in result:
+        raise ValueError(f"{label}: missing 'rows'")
+
+    rows = result["rows"]
+
+    if not isinstance(rows, list):
+        raise ValueError(f"{label}: 'rows' must be a list")
+
+    for row_index, row in enumerate(rows):
+        if not isinstance(row, list):
+            raise ValueError(
+                f"{label}: row {row_index} must be a list"
+            )
+
+        if len(row) != ncols:
+            raise ValueError(
+                f"{label}: row {row_index} has {len(row)} columns; "
+                f"expected {ncols}"
+            )
+
+    if "cycles" in result:
+        cycles = result["cycles"]
+
+        if (
+            not isinstance(cycles, int)
+            or isinstance(cycles, bool)
+            or cycles < 0
+        ):
+            raise ValueError(
+                f"{label}: 'cycles' must be a non-negative integer"
+            )
+
+    return result
 
 
 def rows_equal(row_a, row_b):
@@ -158,6 +230,7 @@ def outputs_match(original, optimized, preserve_order):
 
     return not unmatched
 
+
 def main():
     if len(sys.argv) != 2:
         print("Usage: evaluate OPTIMIZER", file=sys.stderr)
@@ -185,10 +258,13 @@ def main():
 
     passed = 0
     failed = 0
+    skipped = 0
 
     with tempfile.TemporaryDirectory() as temp_dir:
         for program in programs:
             print(f"Testing {program.name}...", flush=True)
+
+            stage = "original MiniVM"
 
             try:
                 # Run the original program.
@@ -199,12 +275,20 @@ def main():
                 # An original program that errors is outside the
                 # equivalence requirement.
                 if original_result.returncode != 0:
-                    print(f"SKIP {program.name}: original program errors")
+                    skipped += 1
+                    print(
+                        f"SKIP {program.name}: original program errors"
+                    )
                     continue
 
-                original_json = json.loads(original_result.stdout)
+                original_json = validate_output(
+                    json.loads(original_result.stdout),
+                    f"{program.name} original output",
+                )
 
-                # Run the supplied optimiser.
+                # Run the supplied optimizer.
+                stage = "optimizer"
+
                 optimized_source = run_command(
                     optimizer_command(optimizer, program, SCHEMA),
                     timeout=1,
@@ -227,23 +311,30 @@ def main():
                     encoding="utf-8",
                 )
 
-                # Run the optimised program.
+                # Run the optimized program.
+                stage = "optimized MiniVM"
+
                 optimized_result = run_command(
                     [str(MINIVM), str(optimized_path), str(DATA)]
                 )
 
                 if optimized_result.returncode != 0:
                     raise RuntimeError(
-                        "Optimised program failed: "
+                        "Optimized program failed: "
                         + optimized_result.stderr
                     )
 
-                optimized_json = json.loads(optimized_result.stdout)
+                optimized_json = validate_output(
+                    json.loads(optimized_result.stdout),
+                    f"{program.name} optimized output",
+                )
 
                 # Preserve output order when the program explicitly sorts.
                 source = program.read_text(encoding="utf-8-sig")
+
                 has_sort = any(
-                    line.strip().split(None, 1)[0].upper() in {"SORT", "TOPK"}
+                    line.strip().split(None, 1)[0].upper()
+                    in {"SORT", "TOPK"}
                     for line in source.splitlines()
                     if line.strip() and not line.strip().startswith(";")
                 )
@@ -253,14 +344,19 @@ def main():
                     optimized_json,
                     has_sort,
                 ):
-                    raise RuntimeError("Original and optimised outputs differ")
+                    raise RuntimeError(
+                        "Original and optimized outputs differ"
+                    )
 
                 passed += 1
                 print(f"PASS {program.name}")
 
-            except subprocess.TimeoutExpired:
+            except subprocess.TimeoutExpired as error:
                 failed += 1
-                print(f"FAIL {program.name}: timeout")
+                print(
+                    f"FAIL {program.name}: {stage} timed out "
+                    f"(limit: {error.timeout} seconds)"
+                )
 
             except Exception as error:
                 failed += 1
@@ -269,9 +365,14 @@ def main():
     print("\nEvaluation summary")
     print(f"Passed: {passed}")
     print(f"Failed: {failed}")
+    print(f"Skipped: {skipped}")
 
     if failed:
         print("Evaluation failed.")
+        return 1
+
+    if passed == 0:
+        print("Evaluation failed: no programs passed.")
         return 1
 
     print("Evaluation passed.")
