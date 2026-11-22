@@ -10,4 +10,4 @@
 q0007 sorts rows, filters to July 2023, then selects a limited prefix. This was identified as a possible future rewrite candidate. No advanced rewrite is evidenced in the supplied commit report.
 
 ## Status
-Exploration/planning only. Do not list these transformations as implemented or tested.
+Exploration/planning only.

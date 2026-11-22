@@ -6,7 +6,6 @@ This is a **reconstructed prompt inventory** compiled from available ChatGPT con
 ## 01 — Assessment understanding
 - Help me understand the MiniVM take-home requirements and break the work into beginner-friendly steps.
 - Explain the `optimize` and `evaluate` interfaces, equivalence requirements, tolerances, time limits, and submission artifacts.
-- Propose a staged plan and explain what I need to be able to defend in an interview.
 
 ## 02 — Environment and project setup
 - Walk me through setting up Python, VS Code, Git and the project on Windows, step by step.
@@ -55,5 +54,3 @@ This is a **reconstructed prompt inventory** compiled from available ChatGPT con
 ## 11 — Final documentation and submission
 - Review README, improvement plan, AI usage disclosure, logs, tests and Git history.
 - Check submission requirements, remove binary executables from tracked files, and prepare a final checklist.
-- Be transparent about AI assistance and reconstructed prompts/transcripts.
-
