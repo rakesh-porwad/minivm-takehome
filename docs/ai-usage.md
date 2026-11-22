@@ -8,14 +8,16 @@ The exact model identifiers, request counts, token consumption and per-session u
 
 ## AI tools and usage
 
-Interface >> Desktop application
-Tool >> openai-gpt-5.4 
-Plan >> Free
-Operating System >> Windows
-Requests >> 73
-Approx. Input token >> ~2M
-Approx.Output tok >> ~20K
-Credits >>
+| Metric | Details |
+|---|---|
+| Interface | Desktop application |
+| Tool / Model | OpenAI GPT-5.4 |
+| Plan | Free |
+| Operating System | Windows |
+| Requests | 73 |
+| Approx. Input Tokens | ~2M |
+| Approx. Output Tokens | ~20K |
+| Credits / Cost | N/A (Free plan; no API credits used) |
 
 **Note:** Requests, Input/output tokens and credits are just based on guess because Free plan of Tool has been used so not having all exact stats.
 
