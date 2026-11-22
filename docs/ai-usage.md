@@ -8,9 +8,9 @@ The exact model identifiers, request counts, token consumption and per-session u
 
 ## AI tools and usage
 
-| Interface | Tool | Plan | Operating System |
+| Interface | Tool | Plan | Operating System |Requests|Approx. Input token|Approx.Output tok|Credits
 |---|---|---|---|
-| Desktop application | ChatGPT | Free | Windows |
+| Desktop application | openai-gpt-5.4 | Free | Windows | | | |
 
 **Model identification:** Exact model/version information for all assessment sessions was not retained. No model-level usage breakdown is claimed.
 
