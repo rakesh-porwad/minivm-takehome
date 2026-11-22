@@ -1,50 +1,67 @@
-﻿# AI Usage Disclosure
+# AI models used and spend
 
-## 1. AI Tools Used
+All AI assistance for this assessment was provided through the **ChatGPT Desktop application** on a Windows computer, using the **ChatGPT Free plan**.
 
-ChatGPT (OpenAI) was used as an AI assistant throughout the development of this MiniVM optimiser assessment.
+ChatGPT was used as an assistant throughout the assessment for understanding requirements, planning the implementation, discussing optimisation approaches, reviewing code, debugging issues, preparing tests and improving documentation.
 
-The exact model identifier for every individual interaction was not independently recorded. Therefore, no unverified model names are claimed.
+The exact model identifiers, request counts, token consumption and per-session usage statistics were not recorded in a form that could be independently verified. Therefore, no estimated usage or cost figures are presented.
 
-## 2. How AI Was Used
+## AI tools and usage
 
-AI assistance supported the following activities:
+| Interface | Tool | Plan | Operating System |
+|---|---|---|---|
+| Desktop application | ChatGPT | Free | Windows |
 
-- Understanding the assessment requirements and MiniVM language documentation.
-- Discussing the design of a conservative Dead Code Elimination (DCE) optimiser.
-- Developing and reviewing Python code for parsing, instruction analysis, dependency analysis and optimisation.
-- Identifying potential correctness issues and debugging implementation problems.
-- Designing tests for dependency analysis, DCE logic, runtime equivalence and evaluator failure cases.
-- Reviewing test results and explaining implementation errors.
-- Preparing project documentation, test summaries and the future improvement plan.
+**Model identification:** Exact model/version information for all assessment sessions was not retained. No model-level usage breakdown is claimed.
 
-## 3. Developer Contribution and Verification
+**Spend:** The assessment work was performed using the ChatGPT Free plan. No separately billed API usage or paid AI subscription was used for this work. A monetary cost estimate is therefore not applicable.
 
-AI-generated suggestions and explanations were reviewed and incorporated during development.
+## Rough split by phase
 
-The implementation was executed and tested locally. The recorded runtime-equivalence tests passed for all eight supplied programs. Additional tests were also performed for dependency analysis, DCE logic and evaluator behaviour.
+| Phase | AI assistance provided | Developer contribution |
+|---|---|---|
+| Requirements understanding and planning | Helped interpret the MiniVM assessment requirements, identify deliverables and break the work into implementation stages. | Reviewed the assessment requirements and determined the implementation priorities. |
+| Design and implementation | Discussed parser design, instruction dependencies, register usage and backward liveness analysis for Dead Code Elimination (DCE). Provided coding guidance and suggestions. | Implemented and integrated the Python modules, reviewed the suggested logic and adapted the solution to the project. |
+| Optimisation development | Assisted with understanding safe dead-code removal, supported and unsupported instructions, and optimisation boundaries. | Developed and refined the optimiser and ensured unsupported instructions were handled conservatively. |
+| Testing and debugging | Helped interpret test failures, Python errors, runtime output and optimiser behaviour. Suggested debugging steps and test improvements. | Ran the MiniVM runtime, investigated errors, corrected code and executed equivalence and optimiser tests. |
+| Performance analysis | Helped add per-program and overall cycle-reduction reporting and interpret the results. | Ran the evaluator and reviewed the original versus optimised cycle counts. |
+| Documentation and submission | Assisted with README content, improvement plan, AI usage disclosure, test results and Git commands. | Reviewed and maintained the project documentation and prepared the repository for submission. |
 
-The developer reviewed the implementation, executed commands, investigated failures and made decisions about the final submission.
+## Key AI-assisted activities
 
-Passing the available tests does not establish correctness for every possible MiniVM program.
+The main areas where ChatGPT provided assistance were:
 
-## 4. Models, Token Usage and Cost
+- Understanding the assessment instructions and expected `optimize` and `evaluate` interfaces.
+- Designing the parser and instruction dependency analysis.
+- Understanding and implementing backward liveness analysis for Dead Code Elimination.
+- Reviewing handling of instruction types and register dependencies.
+- Debugging Python implementation and runtime issues.
+- Preparing runtime-equivalence and optimiser test workflows.
+- Improving the evaluator to report individual and aggregate cycle reductions.
+- Preparing technical documentation and submission materials.
 
-- AI service: ChatGPT by OpenAI.
-- Exact model identifiers per interaction: Not independently recorded.
-- Exact token consumption: Not available from the records currently accessible.
-- Exact monetary cost attributable to this assessment: Not measured.
-- Subscription/API usage: No assessment-specific cost calculation is available.
+## Developer verification and responsibility
 
-No token counts, model identifiers or monetary amounts have been estimated without supporting records.
+AI assistance was used as a development and learning aid. It did not replace the need to run and verify the implementation.
 
-## 5. AI Conversation Records and Limitations
+The developer was responsible for:
 
-The `ai-sessions/` directory contains reconstructed session documentation and prompt inventories prepared from the available development history.
+- Reviewing and adapting AI-generated suggestions.
+- Integrating the implementation into the assessment repository.
+- Running the MiniVM executable and Python test scripts.
+- Investigating and correcting implementation and test failures.
+- Checking runtime equivalence between original and optimised programs.
+- Reviewing cycle-reduction results.
+- Maintaining the final source code and documentation.
 
-These files are not original raw AI conversation exports and are not represented as such.
+All reported test results should be understood as results obtained from the actual local test runs, rather than results assumed from AI-generated suggestions.
 
-A ChatGPT account data export was requested on 22 November 2026. At the time of submission preparation, OpenAI had confirmed that the export was being prepared, but the download was not yet available.
+## Session records and transparency
 
-If the original conversation export becomes available, it can be retained separately as supplementary evidence.
+The `ai-sessions/` directory contains reconstructed session summaries and prompt inventories prepared to document the AI-assisted development process.
 
+These files are not raw ChatGPT conversation exports and should not be interpreted as complete transcripts or independently verified usage records.
+
+A ChatGPT account data export was requested on 22 November 2026. It was still pending at the time this disclosure was prepared. No raw conversation records or usage statistics have been fabricated to fill that gap.
+
+This disclosure aims to accurately describe the AI assistance used during the assessment and distinguish that assistance from the developer's own implementation, testing and verification work.
