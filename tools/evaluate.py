@@ -35,8 +35,6 @@ def run_command(command, timeout=30):
     )
 
 
-
-
 def optimizer_command(optimizer, program, schema):
     # Python optimizer: run using the current Python interpreter.
     if optimizer.suffix.lower() == ".py":
@@ -71,7 +69,6 @@ def optimizer_command(optimizer, program, schema):
         str(program),
         str(schema),
     ]
-
 
 
 NUMERIC_PATTERN = re.compile(
@@ -260,9 +257,14 @@ def main():
     failed = 0
     skipped = 0
 
+    # Overall cycle statistics.
+    total_original_cycles = 0
+    total_optimized_cycles = 0
+    cycle_comparisons = 0
+
     with tempfile.TemporaryDirectory() as temp_dir:
         for program in programs:
-            print(f"Testing {program.name}...", flush=True)
+            print(f"\nTesting {program.name}...", flush=True)
 
             stage = "original MiniVM"
 
@@ -339,6 +341,7 @@ def main():
                     if line.strip() and not line.strip().startswith(";")
                 )
 
+                # Check original and optimized output equivalence.
                 if not outputs_match(
                     original_json,
                     optimized_json,
@@ -348,8 +351,48 @@ def main():
                         "Original and optimized outputs differ"
                     )
 
+                # Collect and display individual cycle statistics.
+                original_cycles = original_json.get("cycles")
+                optimized_cycles = optimized_json.get("cycles")
+
+                if (
+                    isinstance(original_cycles, int)
+                    and not isinstance(original_cycles, bool)
+                    and isinstance(optimized_cycles, int)
+                    and not isinstance(optimized_cycles, bool)
+                ):
+                    total_original_cycles += original_cycles
+                    total_optimized_cycles += optimized_cycles
+                    cycle_comparisons += 1
+
+                    cycles_saved = (
+                        original_cycles - optimized_cycles
+                    )
+
+                    if original_cycles > 0:
+                        reduction = (
+                            cycles_saved / original_cycles
+                        ) * 100
+
+                        reduction_text = f"{reduction:.2f}%"
+                    else:
+                        reduction_text = "N/A"
+
+                    print(
+                        f"PASS {program.name} | "
+                        f"Original: {original_cycles:,} | "
+                        f"Optimized: {optimized_cycles:,} | "
+                        f"Saved: {cycles_saved:,} | "
+                        f"Reduction: {reduction_text}"
+                    )
+
+                else:
+                    print(
+                        f"PASS {program.name} | "
+                        "Cycle information unavailable"
+                    )
+
                 passed += 1
-                print(f"PASS {program.name}")
 
             except subprocess.TimeoutExpired as error:
                 failed += 1
@@ -362,10 +405,44 @@ def main():
                 failed += 1
                 print(f"FAIL {program.name}: {error}")
 
-    print("\nEvaluation summary")
-    print(f"Passed: {passed}")
-    print(f"Failed: {failed}")
-    print(f"Skipped: {skipped}")
+    # Final evaluation summary.
+    print("\n" + "=" * 65)
+    print("MINIVM OPTIMISATION EVALUATION SUMMARY")
+    print("=" * 65)
+
+    print(f"Passed programs:  {passed}")
+    print(f"Failed programs:  {failed}")
+    print(f"Skipped programs: {skipped}")
+
+    # Overall cycle performance.
+    if cycle_comparisons > 0:
+        total_cycles_saved = (
+            total_original_cycles - total_optimized_cycles
+        )
+
+        print("\nOVERALL CYCLE PERFORMANCE")
+        print("-" * 65)
+
+        print(f"Programs compared:       {cycle_comparisons}")
+        print(f"Original total cycles:   {total_original_cycles:,}")
+        print(f"Optimized total cycles:  {total_optimized_cycles:,}")
+        print(f"Total cycles saved:      {total_cycles_saved:,}")
+
+        if total_original_cycles > 0:
+            overall_reduction = (
+                total_cycles_saved / total_original_cycles
+            ) * 100
+
+            print(
+                f"Overall cycle reduction: {overall_reduction:.2f}%"
+            )
+        else:
+            print("Overall cycle reduction: N/A")
+
+    else:
+        print("\nCycle comparison unavailable.")
+
+    print("=" * 65)
 
     if failed:
         print("Evaluation failed.")
