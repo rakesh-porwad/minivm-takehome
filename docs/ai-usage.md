@@ -8,11 +8,16 @@ The exact model identifiers, request counts, token consumption and per-session u
 
 ## AI tools and usage
 
-| Interface | Tool | Plan | Operating System |Requests|Approx. Input token|Approx.Output tok|Credits
-|---|---|---|---|
-| Desktop application | openai-gpt-5.4 | Free | Windows | | | |
+Interface >> Desktop application
+Tool >> openai-gpt-5.4 
+Plan >> Free
+Operating System >> Windows
+Requests >> 73
+Approx. Input token >> ~2M
+Approx.Output tok >> ~20K
+Credits >>
 
-**Model identification:** Exact model/version information for all assessment sessions was not retained. No model-level usage breakdown is claimed.
+**Note:** Requests, Input/output tokens and credits are just based on guess because Free plan of Tool has been used so not having all exact stats.
 
 **Spend:** The assessment work was performed using the ChatGPT Free plan. No separately billed API usage or paid AI subscription was used for this work. A monetary cost estimate is therefore not applicable.
 
