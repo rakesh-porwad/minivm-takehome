@@ -1,3 +1,4 @@
+Note: the account data export was requested and is pending to be received as raw session prompts from ChatGPT.
 # Backward liveness and DCE
 
 

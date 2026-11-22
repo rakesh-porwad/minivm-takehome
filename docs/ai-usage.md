@@ -1,42 +1,50 @@
 ﻿# AI Usage Disclosure
 
-## AI tools used
+## 1. AI Tools Used
 
-ChatGPT was used as an AI assistant during the development of this MiniVM optimiser assessment.
+ChatGPT (OpenAI) was used as an AI assistant throughout the development of this MiniVM optimiser assessment.
 
-Model names may have varied between ChatGPT sessions. The exact model used for every individual interaction was not independently recorded and should not be inferred from the model currently selected.
+The exact model identifier for every individual interaction was not independently recorded. Therefore, no unverified model names are claimed.
 
-## How AI was used
+## 2. How AI Was Used
 
-AI assistance was used to support the following activities:
+AI assistance supported the following activities:
 
 - Understanding the assessment requirements and MiniVM language documentation.
-- Discussing the design of a conservative dead code elimination (DCE) optimiser.
+- Discussing the design of a conservative Dead Code Elimination (DCE) optimiser.
 - Developing and reviewing Python code for parsing, instruction analysis, dependency analysis and optimisation.
 - Identifying potential correctness issues and debugging implementation problems.
-- Designing tests for dependency analysis, DCE logic, numeric tolerance, runtime equivalence and evaluator failure cases.
-- Reviewing test results and explaining errors encountered during development.
+- Designing tests for dependency analysis, DCE logic, runtime equivalence and evaluator failure cases.
+- Reviewing test results and explaining implementation errors.
 - Preparing project documentation, test summaries and the future improvement plan.
 
-## Work performed and verification
+## 3. Developer Contribution and Verification
 
-AI-generated explanations and code suggestions were reviewed and incorporated during development. The implementation was run locally, and the supplied sample programs and additional tests were executed to check the results.
+AI-generated suggestions and explanations were reviewed and incorporated during development.
 
-The optimiser and evaluator were tested against the available sample programs. The recorded runtime-equivalence tests passed for all eight supplied programs. Additional tests were also run for dependency analysis, DCE logic, numeric tolerance and evaluator failure scenarios.
+The implementation was executed and tested locally. The recorded runtime-equivalence tests passed for all eight supplied programs. Additional tests were also performed for dependency analysis, DCE logic and evaluator behaviour.
 
-The developer remains responsible for reviewing the implementation, running the tests and checking the submitted results. Passing the available tests does not establish correctness for every possible MiniVM program.
+The developer reviewed the implementation, executed commands, investigated failures and made decisions about the final submission.
 
-## Models, token usage and cost
+Passing the available tests does not establish correctness for every possible MiniVM program.
 
-- AI service: ChatGPT.
-- Exact model usage by individual session: not fully recorded.
-- Exact token consumption: unavailable and not measured.
-- Exact monetary cost attributable to this assessment: unavailable and not measured.
+## 4. Models, Token Usage and Cost
 
-No exact token or cost figures are claimed because they were not available from the records used during development.
+- AI service: ChatGPT by OpenAI.
+- Exact model identifiers per interaction: Not independently recorded.
+- Exact token consumption: Not available from the records currently accessible.
+- Exact monetary cost attributable to this assessment: Not measured.
+- Subscription/API usage: No assessment-specific cost calculation is available.
 
-## AI conversation records
+No token counts, model identifiers or monetary amounts have been estimated without supporting records.
 
-Raw AI conversation records should be retained separately in the `ai_sessions/` directory, in accordance with the assessment submission requirements.
+## 5. AI Conversation Records and Limitations
 
-This disclosure is a summary of AI assistance and is not intended to replace the original conversation records.
+The `ai-sessions/` directory contains reconstructed session documentation and prompt inventories prepared from the available development history.
+
+These files are not original raw AI conversation exports and are not represented as such.
+
+A ChatGPT account data export was requested on 22 November 2026. At the time of submission preparation, OpenAI had confirmed that the export was being prepared, but the download was not yet available.
+
+If the original conversation export becomes available, it can be retained separately as supplementary evidence.
+

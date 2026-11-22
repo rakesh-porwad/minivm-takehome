@@ -1,3 +1,5 @@
+Note: the account data export was requested and is pending to be received as raw session prompts from ChatGPT.
+
 # AI Sessions — MiniVM Take-Home Assessment
 
 This directory documents the AI-assisted work for the MiniVM optimiser assessment, organised by development stage and aligned against the available Git commit report.
